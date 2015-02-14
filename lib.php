@@ -409,6 +409,35 @@ function theme_essential_set_slide_size($css, $slidesize) {
         $slidesize = 100;
     }
 
+    switch ($slidesize) {
+        case 10:
+            $replacement = '1';
+            $nocaptionmargintopreplacement = '2';
+        break;
+        case 25:
+            $replacement = '1';
+            $nocaptionmargintopreplacement = '3';
+        break;
+        case 50:
+            $replacement = '2';
+            $nocaptionmargintopreplacement = '4';
+        break;
+        case 75:
+            $replacement = '4';
+            $nocaptionmargintopreplacement = '5';
+        break;
+        case 100:
+            $replacement = '8';
+            $nocaptionmargintopreplacement = '6.5';
+        break;
+    }
+    $tag = '[[setting:slidepadding]]';
+    $css = str_replace($tag, $replacement . 'px', $css);
+    $tag = '[[setting:slideleftmargin]]';
+    $css = str_replace($tag, '-'. $replacement . 'px', $css);
+    $tag = '[[setting:nocaptionmargintop]]';
+    $css = str_replace($tag, $nocaptionmargintopreplacement . '%', $css);
+
     $slidesize /= 100;
 
     $cases = range(1, 4);

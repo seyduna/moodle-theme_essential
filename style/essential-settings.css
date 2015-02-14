@@ -233,6 +233,13 @@ ul.breadcrumb.style2 li a:hover {
 #essentialCarousel.carousel .carousel-inner .carousel-caption p {
   color: [[setting:slidecolor]];
 }
+#essentialCarousel.carousel .carousel-inner > .item .carousel-image {
+  margin-top: [[setting:slidepadding]];
+}
+#essentialCarousel.carousel .carousel-inner > .item.side-caption .carousel-image {
+  padding: [[setting:slidepadding]];
+  margin-left: [[setting:slideleftmargin]];
+}
 #essentialCarousel.carousel .carousel-control {
   color: [[setting:slidebuttoncolor]];
 }
@@ -248,6 +255,88 @@ ul.breadcrumb.style2 li a:hover {
 }
 #essentialCarousel.carousel .carousel-indicators .active {
   background-color: [[setting:carouselactivecolor]];
+}
+@media (max-width: 767px) {
+  #essentialCarousel.carousel .carousel-inner > .item {
+    height: [[setting:slidesize_case1]];
+  }
+  #essentialCarousel.carousel .carousel-inner > .item .carousel-image-container {
+    line-height: [[setting:slidesize_case1]];
+  }
+  #essentialCarousel.carousel .carousel-inner > .item .carousel-image {
+    max-height: [[setting:slidesize_case1_90percent]];
+  }
+  #essentialCarousel.carousel .carousel-inner.below > .item,
+  #essentialCarousel.carousel .carousel-inner > .item.side-caption {
+    height: [[setting:slidesize_case1_135percent]];
+  }
+  #essentialCarousel.carousel .carousel-inner.below > .item .carousel-image-container.nocaption,
+  #essentialCarousel.carousel .carousel-inner > .item.side-caption .carousel-image-container.nocaption {
+    line-height: [[setting:slidesize_case1_135percent]];
+  }
+  #essentialCarousel.carousel .carousel-inner > .item.side-caption div.nocaption {
+    margin-top: [[setting:nocaptionmargintop]];
+  }
+}
+@media (min-width: 768px) {
+  #essentialCarousel.carousel .carousel-inner > .item {
+    height: [[setting:slidesize_case2]];
+  }
+  #essentialCarousel.carousel .carousel-inner > .item .carousel-image-container {
+    line-height: [[setting:slidesize_case2]];
+  }
+  #essentialCarousel.carousel .carousel-inner > .item .carousel-image {
+    max-height: [[setting:slidesize_case2_90percent]];
+  }
+  #essentialCarousel.carousel .carousel-inner > .item.side-caption div.the-side-caption {
+    height: [[setting:slidesize_case2]];
+  }
+  #essentialCarousel.carousel .carousel-inner.below > .item {
+    height: [[setting:slidesize_case2_135percent]];
+  }
+  #essentialCarousel.carousel .carousel-inner.below > .item .carousel-image-container.nocaption {
+    line-height: [[setting:slidesize_case2_135percent]];
+  }
+}
+@media (min-width: 992px) {
+  #essentialCarousel.carousel .carousel-inner > .item {
+    height: [[setting:slidesize_case3]];
+  }
+  #essentialCarousel.carousel .carousel-inner > .item .carousel-image-container {
+    line-height: [[setting:slidesize_case3]];
+  }
+  #essentialCarousel.carousel .carousel-inner > .item .carousel-image {
+    max-height: [[setting:slidesize_case3_90percent]];
+  }
+  #essentialCarousel.carousel .carousel-inner > .item.side-caption div.the-side-caption {
+    height: [[setting:slidesize_case3]];
+  }
+  #essentialCarousel.carousel .carousel-inner.below > .item {
+    height: [[setting:slidesize_case4_135percent]];
+  }
+  #essentialCarousel.carousel .carousel-inner.below > .item .carousel-image-container.nocaption {
+    line-height: [[setting:slidesize_case4_135percent]];
+  }
+}
+@media (min-width: 1200px) {
+  #essentialCarousel.carousel .carousel-inner > .item {
+    height: [[setting:slidesize_case4]];
+  }
+  #essentialCarousel.carousel .carousel-inner > .item .carousel-image-container {
+    line-height: [[setting:slidesize_case4]];
+  }
+  #essentialCarousel.carousel .carousel-inner > .item .carousel-image {
+    max-height: [[setting:slidesize_case4_90percent]];
+  }
+  #essentialCarousel.carousel .carousel-inner > .item.side-caption div.the-side-caption {
+    height: [[setting:slidesize_case4]];
+  }
+  #essentialCarousel.carousel .carousel-inner.below > .item {
+    height: [[setting:slidesize_case4_135percent]];
+  }
+  #essentialCarousel.carousel .carousel-inner.below > .item .carousel-image-container.nocaption {
+    line-height: [[setting:slidesize_case4_135percent]];
+  }
 }
 /* @end */
 /*

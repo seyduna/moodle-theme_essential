@@ -38,26 +38,6 @@ function theme_essential_set_fontwww($css) {
     return $css;
 }
 
-function theme_essential_get_setting($setting, $format = false) {
-    global $CFG;
-    require_once($CFG->dirroot . '/lib/weblib.php');
-    static $theme;
-    if (empty($theme)) {
-        $theme = theme_config::load('essential');
-    }
-    if (empty($theme->settings->$setting)) {
-        return false;
-    } else if (!$format) {
-        return $theme->settings->$setting;
-    } else if ($format === 'format_text') {
-        return format_text($theme->settings->$setting, FORMAT_PLAIN);
-    } else if ($format === 'format_html') {
-        return format_text($theme->settings->$setting, FORMAT_HTML, array('trusted' => true, 'noclean' => true));
-    } else {
-        return format_string($theme->settings->$setting);
-    }
-}
-
 function theme_essential_set_logo($css, $logo) {
     $tag = '[[setting:logo]]';
     if (!($logo)) {
@@ -112,6 +92,41 @@ function theme_essential_pluginfile($course, $cm, $context, $filearea, $args, $f
         }
     } else {
         send_file_not_found();
+    }
+}
+
+// Moodle CSS file serving.
+function theme_essential_get_csswww() {
+    global $CFG;
+
+    if (!theme_essential_lte_ie9()) {
+        if (right_to_left()) {
+            $moodlecss = 'essential-rtl.css';
+        } else {
+            $moodlecss = 'essential.css';
+        }
+
+        $syscontext = context_system::instance();
+        $itemid = theme_get_revision();
+        $url = moodle_url::make_file_url("$CFG->wwwroot/pluginfile.php", "/$syscontext->id/theme_essential/style/$itemid/$moodlecss");
+        $url = preg_replace('|^https?://|i', '//', $url->out(false));
+        return '<link rel="stylesheet" href="'.$url.'">';
+    } else {
+        if (right_to_left()) {
+            $moodlecssone = 'essential-rtl_ie9-blessed1.css';
+            $moodlecsstwo = 'essential-rtl_ie9.css';
+        } else {
+            $moodlecssone = 'essential_ie9-blessed1.css';
+            $moodlecsstwo = 'essential_ie9.css';
+        }
+
+        $syscontext = context_system::instance();
+        $itemid = theme_get_revision();
+        $urlone = moodle_url::make_file_url("$CFG->wwwroot/pluginfile.php", "/$syscontext->id/theme_essential/style/$itemid/$moodlecssone");
+        $urlone = preg_replace('|^https?://|i', '//', $urlone->out(false));
+        $urltwo = moodle_url::make_file_url("$CFG->wwwroot/pluginfile.php", "/$syscontext->id/theme_essential/style/$itemid/$moodlecsstwo");
+        $urltwo = preg_replace('|^https?://|i', '//', $urltwo->out(false));
+        return '<link rel="stylesheet" href="'.$urlone.'"><link rel="stylesheet" href="'.$urltwo.'">';
     }
 }
 
@@ -710,10 +725,145 @@ function theme_essential_print_single_section_page(&$that, &$courserenderer, $co
     echo html_writer::end_tag('div');
 }
 
+function theme_essential_get_setting($setting, $format = false, $theme = null) {
+    global $OUTPUT;
+
+    if ($OUTPUT instanceof theme_essential_core_renderer) {
+        return theme_essential_get_setting($setting, $format, $theme);
+    }
+
+    static $theme = null;
+    if (empty($theme)) {
+        $theme = theme_config::load('essential');
+    }
+
+    global $CFG;
+    require_once($CFG->dirroot . '/lib/weblib.php');
+    if (empty($theme->settings->$setting)) {
+        return false;
+    } else if (!$format) {
+        return $theme->settings->$setting;
+    } else if ($format === 'format_text') {
+        return format_text($theme->settings->$setting, FORMAT_PLAIN);
+    } else if ($format === 'format_html') {
+        return format_text($theme->settings->$setting, FORMAT_HTML, array('trusted' => true, 'noclean' => true));
+    } else {
+        return format_string($theme->settings->$setting);
+    }
+}
+
+/**
+ * Checks if the user is switching colours with a refresh
+ *
+ * If they are this updates the users preference in the database
+ */
+function theme_essential_check_colours_switch() {
+    $colours = optional_param('essentialcolours', null, PARAM_ALPHANUM);
+    if (in_array($colours, array('default', 'alternative1', 'alternative2', 'alternative3'))) {
+        set_user_preference('theme_essential_colours', $colours);
+    }
+}
+
+/**
+ * Adds the JavaScript for the colour switcher to the page.
+ *
+ * The colour switcher is a YUI moodle module that is located in
+ *     theme/udemspl/yui/udemspl/udemspl.js
+ *
+ * @param moodle_page $page
+ */
+function theme_essential_initialise_colourswitcher() {
+    global $OUTPUT;
+    user_preference_allow_ajax_update('theme_essential_colours', PARAM_ALPHANUM);
+    $OUTPUT->page->requires->yui_module(
+            'moodle-theme_essential-coloursswitcher', 'M.theme_essential.initColoursSwitcher',
+            array(array('div' => '.dropdown-menu'))
+    );
+}
+
+/**
+ * Gets the theme colours the user has selected if enabled or the default if they have never changed
+ *
+ * @param string $default The default theme colors to use
+ * @return string The theme colours the user has selected
+ */
+function theme_essential_get_colours($default = 'default') {
+    $preference = get_user_preferences('theme_essential_colours', $default);
+    foreach (range(1, 3) as $alternativethemenumber) {
+        if ($preference == 'alternative' . $alternativethemenumber && theme_essential_get_setting('enablealternativethemecolors' . $alternativethemenumber)) {
+            return $preference;
+        }
+    }
+    return $default;
+}
+
+/**
+ * Finds the given include file in the theme.  If it does not exist for the Essential child theme then the parent is checked.
+ * @param string $filename Filename without extension to get.
+ * @return string Complete path of the file.
+ */
+function theme_essential_get_include_file($filename) {
+    global $CFG, $PAGE;
+    $themedir = $PAGE->theme->dir;
+    $themename = $PAGE->theme->name;
+    $filename .= '.php';
+    if (file_exists("$themedir/layout/includes/$filename")) {
+        return "$themedir/layout/includes/$filename";
+    } else if (file_exists("$CFG->dirroot/theme/$themename/layout/includes/$filename")) {
+        return "$CFG->dirroot/theme/$themename/layout/includes/$filename";
+    } else if (!empty($CFG->themedir) and file_exists("$CFG->themedir/$themename/layout/includes/$filename")) {
+        return "$CFG->themedir/$themename/includes/$filename";
+    }
+    // Not here so check parent Essential.
+    if (file_exists("$CFG->dirroot/theme/essential/layout/includes/$filename")) {
+        return "$CFG->dirroot/theme/essential/layout/includes/$filename";
+    } else if (!empty($CFG->themedir) and file_exists("$CFG->themedir/essential/layout/includes/$filename")) {
+        return "$CFG->themedir/essential/includes/$filename";
+    } else {
+        return dirname(__FILE__)."$filename";
+    }
+}
+
+/**
+ * States if the browser is not IE9 or less.
+ */
+function theme_essential_not_lte_ie9() {
+    $properties = theme_essential_ie_properties();
+    if (!is_array($properties)) {
+        return true;
+    }
+    // We have properties, it is a version of IE, so is it greater than 9?
+    return ($properties['version'] > 9.0);
+}
+
+/**
+ * States if the browser is IE9 or less.
+ */
+function theme_essential_lte_ie9() {
+    $properties = theme_essential_ie_properties();
+    if (!is_array($properties)) {
+        return false;
+    }
+    // We have properties, it is a version of IE, so is it greater than 9?
+    return ($properties['version'] <= 9.0);
+}
+
+/**
+ * States if the browser is IE by returning properties, otherwise false.
+ */
+function theme_essential_ie_properties() {
+        $properties = core_useragent::check_ie_properties(); // In /lib/classes/useragent.php.
+    if (!is_array($properties)) {
+        return false;
+    } else {
+        return $properties;
+    }
+}
+
 function theme_essential_page_init(moodle_page $page) {
-    global $CFG, $OUTPUT;
+    global $CFG;
     $page->requires->jquery();
-    $properties = $OUTPUT->theme_essential_ie_properties();
+    $properties = core_useragent::check_ie_properties(); // In /lib/classes/useragent.php.
     if ((is_array($properties)) && ($properties['version'] <= 8.0)) {
         $page->requires->jquery_plugin('html5shiv', 'theme_essential');
     }

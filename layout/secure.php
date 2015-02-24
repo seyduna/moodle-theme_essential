@@ -24,7 +24,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once($OUTPUT->get_include_file('pagesettings'));
+require_once(theme_essential_get_include_file('pagesettings'));
 
 echo $OUTPUT->doctype();
 ?>
@@ -32,7 +32,7 @@ echo $OUTPUT->doctype();
 <head>
     <title><?php echo $OUTPUT->page_title(); ?></title>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>"/>
-    <?php echo $OUTPUT->get_csswww(); ?>
+    <?php echo theme_essential_get_csswww(); ?>
     <?php echo $OUTPUT->standard_head_html() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -80,7 +80,7 @@ echo $OUTPUT->doctype();
                   echo "$('.breadcrumb').jBreadCrumb();";
               }
             }
-            if ($OUTPUT->get_setting('fitvids')) {
+            if (theme_essential_get_setting('fitvids')) {
                 echo "$('#page').fitVids();";
             }
             ?>

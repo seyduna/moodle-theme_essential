@@ -26,21 +26,21 @@
 
 echo $OUTPUT->doctype();
 
-require_once($OUTPUT->get_include_file('pagesettings'));
+require_once(theme_essential_get_include_file('pagesettings'));
 ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?> class="no-js">
 <head>
     <title><?php echo $OUTPUT->page_title(); ?></title>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>"/>
-    <?php echo $OUTPUT->get_csswww(); ?>
+    <?php echo theme_essential_get_csswww(); ?>
     <?php echo $OUTPUT->standard_head_html() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Google web fonts -->
-    <?php require_once($OUTPUT->get_include_file('fonts')); ?>
+    <?php require_once(theme_essential_get_include_file('fonts')); ?>
     <!-- iOS Homescreen Icons -->
-    <?php require_once($OUTPUT->get_include_file('iosicons')); ?>
+    <?php require_once(theme_essential_get_include_file('iosicons')); ?>
     <!-- Start Analytics -->
-    <?php require_once($OUTPUT->get_include_file('analytics')); ?>
+    <?php require_once(theme_essential_get_include_file('analytics')); ?>
     <!-- End Analytics -->
 </head>
 
@@ -57,7 +57,7 @@ require_once($OUTPUT->get_include_file('pagesettings'));
                 echo (!$left) ? ' pull-right' : ' pull-left'; ?>">
                     <?php if (!$haslogo) { ?>
                         <a class="textlogo" href="<?php echo preg_replace("(https?:)", "", $CFG->wwwroot); ?>">
-                            <i id="headerlogo" class="fa fa-<?php echo $OUTPUT->get_setting('siteicon'); ?>"></i>
+                            <i id="headerlogo" class="fa fa-<?php echo theme_essential_get_setting('siteicon'); ?>"></i>
                             <?php echo $OUTPUT->get_title('header'); ?>
                         </a>
                     <?php } else { ?>

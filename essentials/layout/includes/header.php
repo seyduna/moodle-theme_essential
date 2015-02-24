@@ -23,7 +23,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once($OUTPUT->get_include_file('pagesettings'));
+require_once(theme_essential_get_include_file('pagesettings'));
 
 $breadcrumbstyle = 2;
 
@@ -37,7 +37,7 @@ echo $OUTPUT->doctype() ?>
     <?php echo $OUTPUT->standard_head_html() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Google web fonts -->
-    <?php require_once($OUTPUT->get_include_file('fonts')); ?>
+    <?php require_once(theme_essential_get_include_file('fonts')); ?>
 </head>
 
 <body <?php echo $OUTPUT->body_attributes($bodyclasses); ?>>
@@ -53,7 +53,7 @@ echo $OUTPUT->doctype() ?>
                 echo (!$left) ? ' pull-right' : ' pull-left'; ?>">
                     <?php if (!$haslogo) { ?>
                         <a class="textlogo" href="<?php echo preg_replace("(https?:)", "", $CFG->wwwroot); ?>">
-                            <i id="headerlogo" class="fa fa-<?php echo $OUTPUT->get_setting('siteicon'); ?>"></i>
+                            <i id="headerlogo" class="fa fa-<?php echo theme_essential_get_setting('siteicon'); ?>"></i>
                             <?php echo $OUTPUT->get_title('header'); ?>
                         </a>
                     <?php } else { ?>

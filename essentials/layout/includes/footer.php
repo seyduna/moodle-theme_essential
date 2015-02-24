@@ -70,7 +70,7 @@ if (empty($PAGE->layout_options['nofooter'])) {
     <script type="text/javascript">
         jQuery(document).ready(function () {
             <?php
-            if ($OUTPUT->theme_essential_not_lte_ie9()) {
+            if (theme_essential_not_lte_ie9()) {
               echo "jQuery('#essentialnavbar').affix({";
               echo "offset: {";
               echo "top: $('#page-header').height()";
@@ -80,7 +80,7 @@ if (empty($PAGE->layout_options['nofooter'])) {
                   echo "$('.breadcrumb').jBreadCrumb();";
               }
             }
-            if ($OUTPUT->get_setting('fitvids')) {
+            if (theme_essential_get_setting('fitvids')) {
                 echo "$('#page').fitVids();";
             }
             ?>

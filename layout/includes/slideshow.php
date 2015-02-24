@@ -27,9 +27,9 @@
 $numberofslides = theme_essential_showslider();
 
 if ($numberofslides) {
-    $slideinterval  = $OUTPUT->get_setting('slideinterval');
-    $captionscenter = ($OUTPUT->get_setting('slidecaptioncentred'))? ' centred' : '';
-    $captionoptions = $OUTPUT->get_setting('slidecaptionoptions');
+    $slideinterval  = theme_essential_get_setting('slideinterval');
+    $captionscenter = (theme_essential_get_setting('slidecaptioncentred'))? ' centred' : '';
+    $captionoptions = theme_essential_get_setting('slidecaptionoptions');
     $captionsbelowclass  = ($captionoptions == 2) ? ' below' : '';
     ?>
     <div class="row-fluid">

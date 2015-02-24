@@ -112,7 +112,7 @@ if ($enable1alert || $enable2alert || $enable3alert) {
                 <div class="bor"></div>
                 <?php
                 echo theme_essential_get_setting('frontcontentarea', 'format_html');
-                echo $OUTPUT->essential_edit_button('theme_essential_frontpage');
+                echo theme_essential_edit_button('theme_essential_frontpage');
                 ?>
                 <div class="bor"></div>
             </div>

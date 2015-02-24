@@ -752,6 +752,14 @@ function theme_essential_get_setting($setting, $format = false, $theme = null) {
     }
 }
 
+function theme_essential_edit_button($section) {
+    global $CFG, $PAGE;
+    if ($PAGE->user_is_editing() && is_siteadmin()) {
+        $url = preg_replace("(https?:)", "", $CFG->wwwroot . '/admin/settings.php?section=');
+        return '<a class="btn btn-success" href="' . $url . $section . '">' . get_string('edit') . '</a>';
+    }
+}
+
 /**
  * Checks if the user is switching colours with a refresh
  *

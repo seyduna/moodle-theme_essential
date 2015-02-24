@@ -25,7 +25,6 @@
  */
 class theme_essential_core_renderer extends core_renderer {
     public $language = null;
-    protected $theme = null;
 
     /**
      * This renders the breadcrumbs
@@ -33,7 +32,7 @@ class theme_essential_core_renderer extends core_renderer {
      */
     public function navbar()
     {
-        $breadcrumbstyle = $this->get_setting('breadcrumbstyle');
+        $breadcrumbstyle = theme_essential_get_setting('breadcrumbstyle');
         if ($breadcrumbstyle) {
             if ($breadcrumbstyle == '4') {
                 $breadcrumbstyle = '1'; // Fancy style with no collapse.
@@ -97,7 +96,7 @@ class theme_essential_core_renderer extends core_renderer {
                 error_log("PERF: " . $perf['txt']);
             }
             if (defined('MDL_PERFTOFOOT') || debugging() || $CFG->perfdebug > 7) {
-                $performanceinfo = $this->performance_output($perf, $this->get_setting('perfinfo'));
+                $performanceinfo = $this->performance_output($perf, theme_essential_get_setting('perfinfo'));
             }
         }
 
@@ -240,9 +239,9 @@ class theme_essential_core_renderer extends core_renderer {
 
         $coursemenu = new custom_menu();
 
-        $hasdisplaymycourses = $this->get_setting('displaymycourses');
+        $hasdisplaymycourses = theme_essential_get_setting('displaymycourses');
         if (isloggedin() && !isguestuser() && $hasdisplaymycourses) {
-            $mycoursetitle = $this->get_setting('mycoursetitle');
+            $mycoursetitle = theme_essential_get_setting('mycoursetitle');
             if ($mycoursetitle == 'module') {
                 $branchtitle = get_string('mymodules', 'theme_essential');
             } else if ($mycoursetitle == 'unit') {
@@ -302,7 +301,7 @@ class theme_essential_core_renderer extends core_renderer {
         if (!isguestuser()) {
             $alternativethemes = array();
             foreach (range(1, 3) as $alternativethemenumber) {
-                if ($this->get_setting('enablealternativethemecolors' . $alternativethemenumber)) {
+                if (theme_essential_get_setting('enablealternativethemecolors' . $alternativethemenumber)) {
                     $alternativethemes[] = $alternativethemenumber;
                 }
             }
@@ -317,8 +316,8 @@ class theme_essential_core_renderer extends core_renderer {
                 $branch->add('<i class="fa fa-square colours-default"></i>' . $defaultthemecolorslabel,
                     new moodle_url($this->page->url, array('essentialcolours' => 'default')), $defaultthemecolorslabel);
                 foreach ($alternativethemes as $alternativethemenumber) {
-                    if ($this->get_setting('alternativethemename' . $alternativethemenumber)) {
-                        $alternativethemeslabel = $this->get_setting('alternativethemename' . $alternativethemenumber);
+                    if (theme_essential_get_setting('alternativethemename' . $alternativethemenumber)) {
+                        $alternativethemeslabel = theme_essential_get_setting('alternativethemename' . $alternativethemenumber);
                     } else {
                         $alternativethemeslabel = get_string('alternativecolors', 'theme_essential', $alternativethemenumber);
                     }
@@ -807,16 +806,16 @@ class theme_essential_core_renderer extends core_renderer {
      */
     protected function theme_essential_render_helplink() {
         global $USER, $CFG;
-        if (!$this->get_setting('helplinktype')) {
+        if (!theme_essential_get_setting('helplinktype')) {
             return false;
         }
         $branchlabel = '<em><i class="fa fa-question-circle"></i>' . get_string('help') . '</em>';
         $branchurl = '';
         $target = '';
 
-        if ($this->get_setting('helplinktype') === '1') {
-            if ($this->get_setting('helplink') && filter_var($this->get_setting('helplink'), FILTER_VALIDATE_EMAIL)) {
-                $branchurl = 'mailto:' . $this->get_setting('helplink') . '?cc=' . $USER->email;
+        if (theme_essential_get_setting('helplinktype') === '1') {
+            if (theme_essential_get_setting('helplink') && filter_var(theme_essential_get_setting('helplink'), FILTER_VALIDATE_EMAIL)) {
+                $branchurl = 'mailto:' . theme_essential_get_setting('helplink') . '?cc=' . $USER->email;
             } else if ($CFG->supportemail && filter_var($CFG->supportemail, FILTER_VALIDATE_EMAIL)) {
                 $branchurl = 'mailto:' . $CFG->supportemail . '?cc=' . $USER->email;
             } else {
@@ -827,11 +826,11 @@ class theme_essential_core_renderer extends core_renderer {
             }
         }
 
-        if ($this->get_setting('helplinktype') === '2') {
-            if ($this->get_setting('helplink') && filter_var($this->get_setting('helplink'), FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)) {
-                $branchurl = $this->get_setting('helplink');
+        if (theme_essential_get_setting('helplinktype') === '2') {
+            if (theme_essential_get_setting('helplink') && filter_var(theme_essential_get_setting('helplink'), FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)) {
+                $branchurl = theme_essential_get_setting('helplink');
                 $target = '_blank';
-            } else if ((!$this->get_setting('helplink')) && (filter_var($CFG->supportpage, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED))) {
+            } else if ((!theme_essential_get_setting('helplink')) && (filter_var($CFG->supportpage, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED))) {
                 $branchurl = $CFG->supportpage;
                 $target = '_blank';
             } else {
@@ -1048,7 +1047,7 @@ class theme_essential_core_renderer extends core_renderer {
 
     public function render_social_network($socialnetwork)
     {
-        if ($this->get_setting($socialnetwork)) {
+        if (theme_essential_get_setting($socialnetwork)) {
             $icon = $socialnetwork;
             if ($socialnetwork === 'googleplus') {
                 $icon = 'google-plus';
@@ -1062,7 +1061,7 @@ class theme_essential_core_renderer extends core_renderer {
             $socialhtml = html_writer::start_tag('li');
             $socialhtml .= html_writer::start_tag('button', array('type' => "button",
                 'class' => 'socialicon ' . $socialnetwork,
-                'onclick' => "window.open('" . $this->get_setting($socialnetwork) . "')",
+                'onclick' => "window.open('" . theme_essential_get_setting($socialnetwork) . "')",
                 'title' => get_string($socialnetwork, 'theme_essential'),
             ));
             $socialhtml .= html_writer::start_tag('i', array('class' => 'fa fa-' . $icon . ' fa-inverse'));
@@ -1218,43 +1217,17 @@ class theme_essential_core_renderer extends core_renderer {
     }
 
     // Essential custom bits.
-    public function get_setting($setting, $format = false, $theme = null) {
-
-        if (empty($theme)) {
-            if (empty($this->theme)) {
-                $this->theme = theme_config::load('essential');
-            }
-            $theme = $this->theme;
-        }
-
-        global $CFG;
-        require_once($CFG->dirroot . '/lib/weblib.php');
-        if (empty($theme->settings->$setting)) {
-            return false;
-        } else if (!$format) {
-            return $theme->settings->$setting;
-        } else if ($format === 'format_text') {
-            return format_text($theme->settings->$setting, FORMAT_PLAIN);
-        } else if ($format === 'format_html') {
-            return format_text($theme->settings->$setting, FORMAT_HTML, array('trusted' => true, 'noclean' => true));
-        } else {
-            return format_string($theme->settings->$setting);
-        }
-    }
 
     public function render_slide($i, $captionoptions, $theme = null) {
-
+        static $theme = null;
         if (empty($theme)) {
-            if (empty($this->theme)) {
-                $this->theme = theme_config::load('essential');
-            }
-            $theme = $this->theme;
+            $theme = theme_config::load('essential');
         }
 
-        $slideurl = $this->get_setting('slide' . $i . 'url', false, $theme);
-        $slideurltarget = $this->get_setting('slide' . $i . 'target', false, $theme);
-        $slidetitle = $this->get_setting('slide' . $i, true, $theme);
-        $slidecaption = $this->get_setting('slide' . $i . 'caption', true, $theme);
+        $slideurl = theme_essential_get_setting('slide' . $i . 'url', false, $theme);
+        $slideurltarget = theme_essential_get_setting('slide' . $i . 'target', false, $theme);
+        $slidetitle = theme_essential_get_setting('slide' . $i, true, $theme);
+        $slidecaption = theme_essential_get_setting('slide' . $i . 'caption', true, $theme);
         if ($captionoptions == 0) {
             $slideextraclass = ' side-caption';
         } else {
@@ -1264,7 +1237,7 @@ class theme_essential_core_renderer extends core_renderer {
         $slideimagealt = strip_tags($slidetitle);
 
         // Get slide image or fallback to default.
-        $slideimage = $this->get_setting('slide' . $i . 'image', false, $theme);
+        $slideimage = theme_essential_get_setting('slide' . $i . 'image', false, $theme);
         if ($slideimage) {
             $slideimage = $theme->setting_file_url('slide' . $i . 'image', 'slide' . $i . 'image');
         } else {
@@ -1334,20 +1307,12 @@ class theme_essential_core_renderer extends core_renderer {
         return $prev . $next;
     }
 
-    public function essential_edit_button($section) {
-        global $CFG;
-        if ($this->page->user_is_editing() && is_siteadmin()) {
-            $url = preg_replace("(https?:)", "", $CFG->wwwroot . '/admin/settings.php?section=');
-            return '<a class="btn btn-success" href="' . $url . $section . '">' . get_string('edit') . '</a>';
-        }
-    }
-
     public function get_title($location) {
         global $CFG, $SITE;
         $title = '';
         if ($location === 'navbar') {
             $url = preg_replace("(https?:)", "", $CFG->wwwroot);
-            switch ($this->get_setting('navbartitle')) {
+            switch (theme_essential_get_setting('navbartitle')) {
                 case 0:
                     return false;
                 break;
@@ -1365,7 +1330,7 @@ class theme_essential_core_renderer extends core_renderer {
                     break;
             }
         } else if ($location === 'header') {
-            switch ($this->get_setting('headertitle')) {
+            switch (theme_essential_get_setting('headertitle')) {
                 case 0:
                     return false;
                     break;

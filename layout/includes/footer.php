@@ -28,7 +28,7 @@ if (empty($PAGE->layout_options['nofooter'])) {
     ?>
     <footer role="contentinfo" id="page-footer">
         <div class="container-fluid">
-            <?php echo $OUTPUT->essential_edit_button('theme_essential_footer'); ?>
+            <?php echo theme_essential_edit_button('theme_essential_footer'); ?>
             <div class="row-fluid footerblocks">
                 <div class="span4 pull-left">
                     <div class="column">

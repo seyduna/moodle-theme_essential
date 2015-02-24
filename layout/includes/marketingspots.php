@@ -89,7 +89,7 @@
            target="<?php echo theme_essential_get_setting('marketing1target'); ?>" class="marketing-button">
             <?php echo theme_essential_get_setting('marketing1buttontext', true); ?>
         </a>
-        <?php echo $OUTPUT->essential_edit_button('theme_essential_frontpage'); ?>
+        <?php echo theme_essential_edit_button('theme_essential_frontpage'); ?>
     </div>
 
     <!-- Advert Button #2 -->
@@ -98,7 +98,7 @@
            target="<?php echo theme_essential_get_setting('marketing2target'); ?>" class="marketing-button">
             <?php echo theme_essential_get_setting('marketing2buttontext', true); ?>
         </a>
-        <?php echo $OUTPUT->essential_edit_button('theme_essential_frontpage'); ?>
+        <?php echo theme_essential_edit_button('theme_essential_frontpage'); ?>
     </div>
 
     <!-- Advert Button #3 -->
@@ -107,6 +107,6 @@
            target="<?php echo theme_essential_get_setting('marketing3target'); ?>" class="marketing-button">
             <?php echo theme_essential_get_setting('marketing3buttontext', true); ?>
         </a>
-        <?php echo $OUTPUT->essential_edit_button('theme_essential_frontpage'); ?>
+        <?php echo theme_essential_edit_button('theme_essential_frontpage'); ?>
     </div>
 </div>
